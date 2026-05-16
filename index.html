@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Premium Lucky Spin</title>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+					<style>
+						* {
+						box-sizing: border-box;
+						margin: 0;
+						padding: 0;
+						}
+
+						body {
+						background-color: #0b0c10;
+						font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+						color: #fff;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						min-height: 100vh;
+						padding-bottom: 30px;
+						overflow-x: hidden;
+						}
+
+						/* --- 1. Top Banner Ad Space --- */
+						.banner-ad-space {
+						width: 100%;
+						max-width: 460px;
+						height: 90px;
+						background-color: #151522;
+						margin-top: 10px;
+						border-radius: 12px;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						border: 2px dashed #444;
+						color: #666;
+						font-size: 14px;
+						font-weight: bold;
+						text-transform: uppercase;
+						letter-spacing: 1px;
+						}
+
+						/* --- 2. Info / Control Bar (Z-Index Fixed for Clicks) --- */
+						.info-bar {
+						width: 90%;
+						max-width: 460px;
+						margin-top: 25px;
+						background-color: #1a1a24;
+						border-radius: 15px;
+						padding: 12px 20px;
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						border: 1px solid #28283d;
+						position: relative;
+						z-index: 100; /* Ensured no layer blocks this bar */
+						}
+
+						.home-btn {
+						color: #4ecca3;
+						font-size: 22px;
+						cursor: pointer;
+						transition: transform 0.2s;
+						padding: 5px 10px;
+						}
+						.home-btn:hover { transform: scale(1.1); }
+
+						.points-display {
+						font-size: 18px;
+						font-weight: 600;
+						color: #ffd700;
+						display: flex;
+						align-items: center;
+						gap: 8px;
+						}
+
+						.claim-btn {
+						background: linear-gradient(90deg, #ff4b2b, #ff416c);
+						color: white;
+						border: none;
+						padding: 8px 16px;
+						border-radius: 20px;
+						font-weight: bold;
+						font-size: 13px;
+						cursor: pointer;
+						box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
+						text-transform: uppercase;
+						position: relative;
+						z-index: 105;
+						}
+						.claim-btn:active {
+						transform: scale(0.95);
+						}
+
+						/* --- 3. Spin Wheel Container & Arrow --- */
+						.wheel-container {
+						margin-top: 35px;
+						position: relative;
+						width: 360px;
+						height: 360px;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						z-index: 10;
+						}
+
+						.wheel-arrow {
+						position: absolute;
+						top: -18px;
+						left: 50%;
+						transform: translateX(-50%);
+						width: 0;
+						height: 0;
+						border-left: 16px solid transparent;
+						border-right: 16px solid transparent;
+						border-top: 32px solid #ff0055;
+						z-index: 30;
+						filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.6));
+						}
+
+						.main-wheel-svg {
+						width: 100%;
+						height: 100%;
+						border-radius: 50%;
+						border: 8px solid #1f4068;
+						box-shadow: 0 0 25px rgba(78, 204, 163, 0.2), inset 0 0 20px rgba(0,0,0,0.6);
+						z-index: 15;
+						}
+
+						.wheel-text {
+						font-size: 12px;
+						font-family: 'Segoe UI', Arial, sans-serif;
+						font-weight: 900;
+						fill: #ffffff;
+						letter-spacing: 0.5px;
+						}
+
+						.wheel-icon {
+						font-size: 18px;
+						}
+
+						.vector-coin {
+						fill: #ffd700;
+						}
+
+						.center-pin {
+						position: absolute;
+						width: 36px;
+						height: 36px;
+						background: radial-gradient(circle, #ffd700, #ff8c00);
+						border: 4px solid #fff;
+						border-radius: 50%;
+						z-index: 25;
+						box-shadow: 0 0 12px rgba(0,0,0,0.6);
+						}
+
+						/* --- 4. Spin Button & Life Bar Container --- */
+						.action-container {
+						margin-top: 35px;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						width: 100%;
+						position: relative;
+						z-index: 100;
+						}
+
+						.spin-btn {
+						background: linear-gradient(135deg, #4ecca3, #23906f);
+						color: #0b0c10;
+						border: none;
+						width: 180px;
+						height: 50px;
+						border-radius: 25px;
+						font-size: 20px;
+						font-weight: 800;
+						letter-spacing: 1px;
+						cursor: pointer;
+						box-shadow: 0 6px 20px rgba(78, 204, 163, 0.4);
+						transition: all 0.2s;
+						text-transform: uppercase;
+						}
+
+						.spin-btn:active {
+						transform: scale(0.95);
+						}
+
+						.spin-btn:disabled {
+						background: #444;
+						color: #777;
+						box-shadow: none;
+						cursor: not-allowed;
+						}
+
+						.life-status {
+						margin-top: 15px;
+						display: flex;
+						align-items: center;
+						gap: 8px;
+						font-size: 16px;
+						font-weight: 600;
+						background-color: #1a1a24;
+						padding: 6px 16px;
+						border-radius: 20px;
+						border: 1px solid #28283d;
+						}
+
+						.life-status i {
+						color: #ff3344;
+						}
+					</style>
+				</head>
+	<body>
+
+		<div class="banner-ad-space">
+			<i class="fa-solid fa-rectangle-ad" style="margin-right: 8px; font-size: 18px;"></i> Banner Ad Space
+		</div>
+
+		<div class="info-bar">
+			<div class="home-btn" onclick="handleHomeClick()">
+				<i class="fa-solid fa-house"></i>
+			</div>
+			<div class="points-display">
+				<i class="fa-solid fa-coins"></i> <span id="user-points">212</span> Points
+			</div>
+			<button class="claim-btn" onclick="handleClaimClick()">Claim</button>
+		</div>
+
+		<div class="wheel-container">
+			<div class="wheel-arrow"></div>
+			<div class="center-pin"></div>
+
+			<svg id="wheel" class="main-wheel-svg" viewBox="0 0 300 300">
+				<g id="wheel-group">
+				</g>
+			</svg>
+		</div>
+
+		<div class="action-container">
+			<button id="spin-trigger" class="spin-btn" onclick="startPremiumSpin()">SPIN</button>
+
+			<div class="life-status">
+				<span>Lives Left:</span>
+				<span id="life-count">5</span>
+				<i class="fa-solid fa-heart"></i>
+			</div>
+		</div>
+
+		<script>
+			let currentPoints = 212;
+			let currentLives = 5;
+			let isSpinning = false;
+
+			// Custom 16 Segment Configurations
+			const segments = [
+			{ text: "+500", icon: "coin", color: "#1a5235" },
+			{ text: "Bad Luck", icon: "💥", color: "#22222b" },
+			{ text: "+2", icon: "coin", color: "#10316b" },
+			{ text: "-1", icon: "💔", color: "#5c0311" },
+			{ text: "+20", icon: "coin", color: "#164e63" },
+			{ text: "Bad Luck", icon: "💥", color: "#2d2d3a" },
+			{ text: "+1", icon: "❤️", color: "#b9041e" },
+			{ text: "All Dead", icon: "💀", color: "#000000" },
+			{ text: "-2", icon: "💔", color: "#5c0311" },
+			{ text: "+100", icon: "coin", color: "#0f62fe" },
+			{ text: "Bad Luck", icon: "💥", color: "#22222b" },
+			{ text: "+2", icon: "❤️", color: "#b9041e" },
+			{ text: "+10", icon: "coin", color: "#164e63" },
+			{ text: "Bad Luck", icon: "💥", color: "#2d2d3a" },
+			{ text: "+50", icon: "coin", color: "#1e3a8a" },
+			{ text: "+5", icon: "coin", color: "#115e59" }
+			];
+
+			// Custom SVG Coin Vector - Perfectly centered at (0,0) origins
+			const svgCoinPath = `<g class="vector-coin" transform="translate(-9, -9)">
+				<path d="M18 6c0-1.66-4.03-3-9-3S0 4.34 0 6c0 1.66 4.03 3 9 3s9-1.34 9-3zM0 8.66C0 10.3 3.97 11.62 8.87 11.7A11.37 11.37 0 0 1 9 11.7c4.97 0 9-1.34 9-3V8.5c-.14.73-2.5 1.5-6.55 1.5-4.32 0-6.73-.87-6.85-1.65-.24-.26-.41-.53-.5-.73s-.1-.3-.1-.31v1.35zm0 2.66c0 1.64 3.97 2.96 8.87 3.04.04 0 .09 0 .13 0 4.97 0 9-1.34 9-3v-.16c-.14.73-2.5 1.5-6.55 1.5-4.32 0-6.73-.87-6.85-1.65-.24-.26-.41-.53-.5-.73s-.1-.3-.1-.31v1.35zm0 2.66c0 1.64 3.97 2.96 8.87 3.04.04 0 .09 0 .13 0 4.97 0 9-1.34 9-3v-.16c-.14.73-2.5 1.5-6.55 1.5-4.32 0-6.73-.87-6.85-1.65-.24-.26-.41-.53-.5-.73s-.1-.3-.1-.31v1.35z"/>
+			</g>`;
+
+			const totalSlices = 16;
+			const degreesPerSlice = 360 / totalSlices;
+			const wheelGroup = document.getElementById("wheel-group");
+
+			function createSvgWheel() {
+			let html = "";
+			const r = 150;
+			const cx = 150;
+			const cy = 150;
+
+			segments.forEach((item, i) => {
+			const startAngle = i * degreesPerSlice;
+			const endAngle = startAngle + degreesPerSlice;
+
+			const x1 = cx + r * Math.cos((Math.PI * startAngle) / 180);
+			const y1 = cy + r * Math.sin((Math.PI * startAngle) / 180);
+			const x2 = cx + r * Math.cos((Math.PI * endAngle) / 180);
+			const y2 = cy + r * Math.sin((Math.PI * endAngle) / 180);
+
+			html += `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z" fill="${item.color}" stroke="#0b0c10" stroke-width="1.5"/>`;
+
+			const textAngle = startAngle + (degreesPerSlice / 2);
+			const textRadius = r * 0.68;
+			const tx = cx + textRadius * Math.cos((Math.PI * textAngle) / 180);
+			const ty = cy + textRadius * Math.sin((Math.PI * textAngle) / 180);
+
+			let textRotation = 0;
+			let isLongText = (item.text === "Bad Luck" || item.text === "All Dead");
+
+			if (isLongText) {
+			textRotation = textAngle + 180;
+			} else {
+			textRotation = textAngle + 90;
+			}
+
+			let contentMarkup = "";
+			if (isLongText) {
+			contentMarkup = `
+			<text class="wheel-text" x="0" y="-4" text-anchor="middle" dominant-baseline="middle">${item.text}</text>
+			<text class="wheel-icon" x="0" y="14" text-anchor="middle" dominant-baseline="middle">${item.icon}</text>
+			`;
+			} else {
+			let renderIcon = (item.icon === "coin") ? svgCoinPath : `<text class="wheel-icon" x="0" y="-12" text-anchor="middle" dominant-baseline="middle">${item.icon}</text>`;
+
+			// FIXED: Increased the distance between the amount text and the coin/heart graphics
+			contentMarkup = `
+			<g transform="translate(0, -14)">${renderIcon}</g>
+			<text class="wheel-text" x="0" y="12" text-anchor="middle" dominant-baseline="middle">${item.text}</text>
+			`;
+			}
+
+			html += `
+			<g transform="translate(${tx}, ${ty}) rotate(${textRotation})">
+				${contentMarkup}
+			</g>
+			`;
+			});
+
+			wheelGroup.innerHTML = html;
+			}
+
+			createSvgWheel();
+
+			// Control Actions (Fully Unblocked Clicks)
+			function handleHomeClick() {
+			alert("Redirecting to Home Dashboard...");
+			}
+
+			function handleClaimClick() {
+			alert(`Claim successfully triggered! Total claimable: ${currentPoints} Points.`);
+			}
+
+			function startPremiumSpin() {
+			if (isSpinning || currentLives <= 0) return;
+
+			isSpinning = true;
+			document.getElementById("spin-trigger").disabled = true;
+
+			const targetIndex = Math.floor(Math.random() * totalSlices);
+			const selectedReward = segments[targetIndex];
+
+			const baseRotations = 6 * 360;
+			const targetDegrees = baseRotations + (270 - (targetIndex * degreesPerSlice) - (degreesPerSlice / 2));
+
+			wheelGroup.style.transformOrigin = "150px 150px";
+			wheelGroup.style.transition = "transform 5s cubic-bezier(0.1, 0.8, 0.1, 1)";
+			wheelGroup.style.transform = `rotate(${targetDegrees}deg)`;
+
+			setTimeout(() => {
+			if(selectedReward.text.includes("+") && selectedReward.icon === "coin") {
+			currentPoints += parseInt(selectedReward.text.replace("+", ""));
+			} else if(selectedReward.text === "+1" || selectedReward.text === "+2") {
+			currentLives += parseInt(selectedReward.text.replace("+", ""));
+			} else if(selectedReward.text === "-1" || selectedReward.text === "-2") {
+			currentLives = Math.max(0, currentLives - Math.abs(parseInt(selectedReward.text)));
+			} else if(selectedReward.text === "All Dead") {
+			currentLives = 0;
+			}
+
+			document.getElementById("user-points").innerText = currentPoints;
+			document.getElementById("life-count").innerText = currentLives;
+
+			wheelGroup.style.transition = "none";
+			wheelGroup.style.transform = `rotate(${targetDegrees % 360}deg)`;
+
+			isSpinning = false;
+			if (currentLives > 0) {
+			document.getElementById("spin-trigger").disabled = false;
+			}
+			}, 5100);
+			}
+		</script>
+	</body>
+</html>
